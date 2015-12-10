@@ -1,7 +1,5 @@
 package com.companyname.jdbc.beans;
 
-import java.sql.Date;
-
 public class Game 
 {
 	// PRIVATE INSTANCE VARIABLES
@@ -12,7 +10,7 @@ public class Game
 	public int getId() {
 		return this._id;
 	}
-	public String getName() {
+	public String getTitle() {
 		return this._title;
 	}
 		

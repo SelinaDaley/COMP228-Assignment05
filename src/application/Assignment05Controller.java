@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.companyname.jdbc.beans.Game;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -40,18 +42,6 @@ public class Assignment05Controller {
 		{
 			GameListController.displayAllRows(tableData, table);
 		}
-		else if(table.contentEquals("player and game"))
-		{
-			
-		}
-		else if(table.contentEquals("player"))
-		{
-			//PlayerListController.displayAllRows(tableData, table);
-		}
-		else
-		{
-			
-		}
 		
 	}
 	
@@ -60,7 +50,33 @@ public class Assignment05Controller {
 	}
 	
 	public void updateButtonHandler(ActionEvent event) {
-		messageText.setText("Update button pressed");
+		// UPDATE *************************************************************************************************
+		System.out.println("-------------------------");
+		System.out.println("Update a Row of Data");
+		System.out.println("-------------------------");
+		int movieId = InputHelper.getIntegerInput("Select a row to update: ");
+		
+		Movie updateMovie = MovieListController.getRow(movieId);
+		if(updateMovie == null)
+		{
+			System.err.println("Row not found");
+			return;
+		}
+		
+		Double updateRating = InputHelper.getDoubleInput("Enter a new Movie Rating: ");
+		updateMovie.setRating(updateRating);		
+		
+		try 
+		{
+			if(MovieListController.updateRow(updateMovie))
+			{
+				System.out.println("Row was successfully updated");
+			} 
+		}
+		catch (Exception exception) 
+		{
+			System.err.println(exception);
+		} //End of UPDATE
 	}
 	
 	public void removeButtonHandler(ActionEvent event) {
