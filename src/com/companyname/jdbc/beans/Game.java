@@ -18,7 +18,7 @@ public class Game
 	public void setId(int id) {
 		this._id = id;
 	}
-	public void setName(String title) {
+	public void setTitle(String title) {
 		this._title = title;
 	}
 	
