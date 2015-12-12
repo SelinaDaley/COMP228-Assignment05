@@ -10,10 +10,13 @@ import application.DBConfig;
 
 import com.companyname.jdbc.beans.Game;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -32,6 +35,32 @@ public class GameListController {
 	@FXML private Button addButton;
 	@FXML private Button updateButton;
 	@FXML private Button removeButton;
+	
+	// GET ROW COUNT
+	public static ObservableList<String> rowCount(String table) throws SQLException
+	{
+		String SQLQuery = "SELECT * FROM " + table;
+		ObservableList<String> list = FXCollections.observableArrayList();
+		
+		try(
+				Connection connection = DBConfig.getConnection();
+				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); 
+				ResultSet resultSet = statement.executeQuery(SQLQuery);)
+		{
+			while(resultSet.next())
+			{				
+				int id = resultSet.getInt("game_id");				
+				list.add(""+id);	
+			}
+			return list;
+		}
+		catch(SQLException exception)
+		{
+			DBConfig.displayException(exception);				
+		}
+		
+		return list;
+	}
 	
 	// READ ALL DATA
 	public static void displayAllRows(GridPane tableData, String table) throws SQLException
@@ -56,8 +85,6 @@ public class GameListController {
 			DBConfig.displayException(exception);				
 		}
 	}
-	
-	
 	
 	// READ FROM ONE ROW
 	public static Game getRow(int id, String table) throws SQLException
@@ -133,7 +160,6 @@ public class GameListController {
 		return true;
 	}
 	
-	// UPDATE
 	// UPDATE ONE ROW
 	public static boolean updateRow(Game game) throws Exception{
 	
@@ -161,5 +187,33 @@ public class GameListController {
 			return false;
 		}
 	}
+	
+	// DELETE ONE ROW
+	public static boolean deleteRow(int id) throws Exception
+	{
+		String SQLQuery = "DELETE from game WHERE game_id = ?";
+		
+		try(
+				Connection connection = DBConfig.getConnection();
+				PreparedStatement statement = connection.prepareStatement(SQLQuery);)
+		{
+			statement.setInt(1, id);
+			int affected = statement.executeUpdate();
+			
+			if(affected == 1)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		catch(SQLException exception)
+		{
+			DBConfig.displayException(exception);
+			return false;
+		}
+	} //End of DELETE
 	
 }
