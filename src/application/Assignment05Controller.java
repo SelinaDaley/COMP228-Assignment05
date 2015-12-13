@@ -1,9 +1,6 @@
 package application;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import com.companyname.jdbc.beans.Game;
 import com.companyname.jdbc.beans.Player_And_Game;
@@ -13,12 +10,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -28,7 +23,7 @@ public class Assignment05Controller {
 
 	@FXML private Text messageText;
 	@FXML private TextField nameTextField;
-	@FXML private GridPane tableData;// = new GridPane();
+	@FXML private GridPane tableData;
 	@FXML private GridPane tableData2;
 	@FXML private ComboBox tableComboBox;
 	@FXML private AnchorPane mainPage;
@@ -151,8 +146,7 @@ public class Assignment05Controller {
 			Button button = new Button("Submit");
 			tableData2.add(button, 1, 6);
 			button.setOnAction(this::submitButtonHandler2);
-		}				
-				
+		}								
 	}
 	
 	public void updateButtonHandler(ActionEvent event) {
@@ -181,6 +175,7 @@ public class Assignment05Controller {
 			}
 					
 			comboBox.setValue("1");
+			
 			// Title
 			tableData2.add(new Label("Game Title: "), 0, 1);
 			tableData2.add(textField, 1, 1);		
@@ -244,8 +239,7 @@ public class Assignment05Controller {
 			Button button = new Button("Submit");
 			tableData2.add(button, 1, 7);
 			button.setOnAction(this::submitButtonHandler2);
-		}
-		
+		}		
 	}
 	
 	public void removeButtonHandler(ActionEvent event) {
@@ -302,8 +296,7 @@ public class Assignment05Controller {
 			Button button = new Button("Submit");
 			tableData2.add(button, 1, 2);
 			button.setOnAction(this::submitButtonHandler2);
-		}
-		
+		}		
 	}
 	
 	public void submitButtonHandler(ActionEvent event) {

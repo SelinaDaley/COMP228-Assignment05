@@ -2,7 +2,6 @@ package application;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,15 +11,9 @@ import application.DBConfig;
 
 import com.companyname.jdbc.beans.Player_And_Game;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
@@ -29,7 +22,6 @@ public class PlayerAndGameListController {
 
 	@FXML private Text messageText;
 	@FXML private TextField nameTextField;
-	//@FXML private GridPane tableData;
 	
 	// Buttons
 	@FXML private Button displayButton;
