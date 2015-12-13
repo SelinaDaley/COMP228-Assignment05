@@ -64,7 +64,7 @@ public class Assignment05Controller {
 		displayButton.setDisable(false);
 		addButton.setDisable(false);
 		updateButton.setDisable(false);
-		removeButton.setDisable(false);
+		removeButton.setDisable(false); 
 	}
 	
 	public void displayButtonHandler(ActionEvent event) throws SQLException {
@@ -77,6 +77,12 @@ public class Assignment05Controller {
 			tableData2.getChildren().clear();
 			GameListController.displayAllRows(tableData, table);
 		}		
+		else if(table.contentEquals("player"))
+		{
+			tableData.getChildren().clear();
+			tableData2.getChildren().clear();
+			PlayerListController.displayAllRows(tableData, table);
+		}	
 	}
 	
 	public void addButtonHandler(ActionEvent event) {

@@ -9,6 +9,7 @@ import java.sql.Statement;
 import application.DBConfig;
 
 import com.companyname.jdbc.beans.Game;
+import com.companyname.jdbc.beans.Player;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,8 +24,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
-//Controller class for our Game Model - Java Bean
-public class GameListController {
+//Controller class for our Player Model - Java Bean
+public class PlayerListController {
 
 	@FXML private Text messageText;
 	@FXML private TextField nameTextField;
@@ -35,6 +36,7 @@ public class GameListController {
 	@FXML private Button addButton;
 	@FXML private Button updateButton;
 	@FXML private Button removeButton;
+	
 	
 	// GET ROW COUNT
 	public static ObservableList<String> rowCount(String table) throws SQLException
@@ -49,7 +51,7 @@ public class GameListController {
 		{
 			while(resultSet.next())
 			{				
-				int id = resultSet.getInt("game_id");				
+				int id = resultSet.getInt("player_id");				
 				list.add(""+id);	
 			}
 			return list;
@@ -73,10 +75,15 @@ public class GameListController {
 		{
 			while(resultSet.next())
 			{				
-				int id = resultSet.getInt("game_id");
-				String title = resultSet.getString("game_title");
+				int id = resultSet.getInt("player_id");
+				String firstName = resultSet.getString("first_name");
+				String lastName = resultSet.getString("last_name");
+				String address = resultSet.getString("address");
+				String postalCode = resultSet.getString("postal_code"); 
+				String province = resultSet.getString("province");
+				String phoneNumber = resultSet.getString("phone_number");
 				
-				tableData.add( new Label("Game " + id + ": " + title), 0, id-1);
+				tableData.add( new Label("Player " + id + ": " + firstName + " " + lastName +", "+ address +"  "+ postalCode +"  "+ province +", ("+ phoneNumber+")"), 0, id-1);
 			}
 		}
 		catch(SQLException exception)
@@ -86,23 +93,28 @@ public class GameListController {
 	}
 	
 	// READ FROM ONE ROW
-	public static Game getRow(int id, String table) throws SQLException
+	public static Player getRow(int id, String table) throws SQLException
 	{
-		String SQLQuery = "SELECT * FROM " + table + " WHERE game_id = ?";
+		String SQLQuery = "SELECT * FROM " + table + " WHERE player_id = ?";
 		ResultSet resultSet = null;
-				
+					
 		try(Connection connection = DBConfig.getConnection();
 		PreparedStatement statement = connection.prepareStatement(SQLQuery);)
 		{
 			statement.setInt(1, id);
 			resultSet = statement.executeQuery();
-		
+			
 			//check to see if we received any data
 			if(resultSet.next()) {
-				Game game =  new Game();
-				game.setId(id);
-				game.setTitle(resultSet.getString("game_title"));
-				return game;
+				Player player =  new Player();
+				player.setId(id);
+				player.setFirstName(resultSet.getString("first_name"));
+				player.setLastName(resultSet.getString("last_name"));
+				player.setAddress(resultSet.getString("address"));
+				player.setPostalCode(resultSet.getString("postal_code"));
+				player.setProvince(resultSet.getString("province"));
+				player.setPhoneNumber(resultSet.getString("phone_number"));
+				return player;
 			} else {
 				return null;
 			}
@@ -122,10 +134,10 @@ public class GameListController {
 	}
 
 	// INSERT ONE ROW
-	public static boolean insertRow(Game game) throws Exception {
-		String SQLQuery = "INSERT into game " +
-	                      "(game_title) " +
-				          "VALUES (?)";
+	public static boolean insertRow(Player player) throws Exception {
+		String SQLQuery = "INSERT into player " +
+	                      "(first_name, last_name, address, postal_code, province, phone_number) " +
+				          "VALUES (?,?,?,?,?,?)";
 				
 		ResultSet keys = null;
 		try(
@@ -133,45 +145,59 @@ public class GameListController {
 			PreparedStatement statement = connection.prepareStatement(SQLQuery, Statement.RETURN_GENERATED_KEYS);
 			){
 					
-			statement.setString(1, game.getTitle());
+			statement.setString(1, player.getFirstName());
+			statement.setString(2, player.getLastName());
+			statement.setString(3, player.getAddress());
+			statement.setString(4, player.getPostalCode());
+			statement.setString(5, player.getProvince());
+			statement.setString(6, player.getPhoneNumber());
 			//get the number of return rows
 			int affected = statement.executeUpdate();
 			if(affected == 1) {
 				keys = statement.getGeneratedKeys();
 				keys.next();
 				int newKey = keys.getInt(1);
-				game.setId(newKey);
-			} else {
+				player.setId(newKey);
+			} 
+			else 
+			{
 				System.err.println("No Rows Affected");
-			}
-				
-					
-		} catch(SQLException exception) {
+			}		
+		} 
+		catch(SQLException exception) 
+		{
 			DBConfig.displayException(exception);
 			return false;
-		} finally {
-			if(keys != null) {
+		} 
+		finally 
+		{
+			if(keys != null)
+			{
 				keys.close();
 			}
-		}
-			
+		}			
 		return true;
 	}
 	
 	// UPDATE ONE ROW
-	public static boolean updateRow(Game game) throws Exception{
-	
-		String SQLQuery = "UPDATE game SET " +
-	        "game_title = ?" +
-	        "WHERE game_id = ?";
+	public static boolean updateRow(Player player) throws Exception{
+		
+		String SQLQuery = "UPDATE player SET " +
+	        "first_name = ?, last_name = ?, address = ?, postal_code = ?, province = ?, phone_number = ?" +
+	        "WHERE player_id = ?";
 			
 		try(
 				Connection connection = DBConfig.getConnection();
 				PreparedStatement statement = connection.prepareStatement(SQLQuery);)
 		{
-			statement.setString(1, game.getTitle());
-			statement.setInt(2, game.getId());
-				
+			statement.setString(1, player.getFirstName());
+			statement.setString(2, player.getLastName());
+			statement.setString(3, player.getAddress());
+			statement.setString(4, player.getPostalCode());
+			statement.setString(5, player.getProvince());
+			statement.setString(6, player.getPhoneNumber());
+			statement.setInt(7, player.getId());
+					
 			int affected = statement.executeUpdate();
 			if(affected == 1) {
 				return true;
@@ -189,7 +215,7 @@ public class GameListController {
 	// DELETE ONE ROW
 	public static boolean deleteRow(int id) throws Exception
 	{
-		String SQLQuery = "DELETE from game WHERE game_id = ?";
+		String SQLQuery = "DELETE from player WHERE player_id = ?";
 		
 		try(
 				Connection connection = DBConfig.getConnection();
