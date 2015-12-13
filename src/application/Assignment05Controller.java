@@ -5,14 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
-
-//import com.companyname.jdbc.InputHelper;
-//import com.companyname.jdbc.MovieListController;
 import com.companyname.jdbc.beans.Game;
-//import com.companyname.jdbc.beans.Movie;
-
-
+import com.companyname.jdbc.beans.Player_And_Game;
 import com.companyname.jdbc.beans.Player;
 
 import javafx.collections.FXCollections;
@@ -72,6 +66,14 @@ public class Assignment05Controller {
 		addButton.setDisable(false);
 		updateButton.setDisable(false);
 		removeButton.setDisable(false); 
+		
+		if(table.contentEquals("player_and_game"))
+		{
+			addButton.setDisable(true);
+			updateButton.setDisable(true);
+			removeButton.setDisable(true); 
+		}
+		
 	}
 	
 	public void displayButtonHandler(ActionEvent event) throws SQLException {
@@ -88,6 +90,10 @@ public class Assignment05Controller {
 		{
 			PlayerListController.displayAllRows(tableData, table);
 		}	
+		else if(table.contentEquals("player_and_game"))
+		{
+			PlayerAndGameListController.displayAllRows2(tableData, table);
+		}
 	}
 	
 	public void addButtonHandler(ActionEvent event) {

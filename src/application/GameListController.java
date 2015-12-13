@@ -71,6 +71,7 @@ public class GameListController {
 				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); 
 				ResultSet resultSet = statement.executeQuery(SQLQuery);)
 		{
+			
 			while(resultSet.next())
 			{				
 				int id = resultSet.getInt("game_id");

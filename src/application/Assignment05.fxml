@@ -22,7 +22,7 @@
       	<items>
       		<FXCollections fx:factory="observableArrayList">
         		<String fx:value="game" />
-        		<String fx:value="player and game" />
+        		<String fx:value="player_and_game" />
         		<String fx:value="player" />
         	</FXCollections>
       	</items>
